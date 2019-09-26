@@ -21,7 +21,15 @@
 #define ASDP 16
 
 //Global variable declarations
-//uint8_t number_to_print = 1;
+//Digit segment display flag declarations
+bool asa_flag = LOW;
+bool asb_flag = LOW;
+bool asc_flag = LOW;
+bool asd_flag = LOW;
+bool ase_flag = LOW;
+bool asf_flag = LOW;
+bool asg_flag = LOW;
+bool asdp_flag = LOW;
 
 //Function prototypes
 void bubble_print(uint8_t number_to_print);
@@ -53,147 +61,143 @@ void setup() //Setup of pin modes, serial, and interrupt
 
 void loop() //Main program body
 {
-  
-  
+
   digitalWrite(CC3, HIGH);
 
-  bubble_print(1);
-  delay(500);
-  bubble_print(2);
-  delay(500);
-  bubble_print(3);
-  delay(500);
-  bubble_print(4);
-  delay(500);
-  bubble_print(5);
-  delay(500);
-  bubble_print(6);
-  delay(500);
-  bubble_print(7);
-  delay(500);
-  bubble_print(8);
-  delay(500);
-  bubble_print(9);
-  delay(500);
-  bubble_print(10);
-  delay(500);
- 
+  digitalWrite(ASA, asa_flag);
+  digitalWrite(ASB, asb_flag);
+  digitalWrite(ASC, asc_flag);
+  digitalWrite(ASD, asd_flag);
+  digitalWrite(ASE, ase_flag);
+  digitalWrite(ASF, asf_flag);
+  digitalWrite(ASG, asg_flag);
+  digitalWrite(ASDP, asdp_flag);
 }
 
-void bubble_print(uint8_t number_to_print){
-switch (number_to_print)
+void bubble_print(uint8_t number_to_print)
 {
-case 1:
-  digitalWrite(ASA, LOW);
-  digitalWrite(ASB, HIGH);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, LOW);
-  digitalWrite(ASE, LOW);
-  digitalWrite(ASF, LOW);
-  digitalWrite(ASG, LOW);
-  digitalWrite(ASDP, LOW);
-  break;
 
-case 2:
-  digitalWrite(ASA, HIGH);
-  digitalWrite(ASB, HIGH);
-  digitalWrite(ASC, LOW);
-  digitalWrite(ASD, HIGH);
-  digitalWrite(ASE, HIGH);
-  digitalWrite(ASF, LOW);
-  digitalWrite(ASG, HIGH);
-  digitalWrite(ASDP, LOW);
-  break;
+  switch (number_to_print)
+  {
+  case 1:
+    asa_flag = LOW;
+    asb_flag = HIGH;
+    asc_flag = HIGH;
+    asd_flag = LOW;
+    ase_flag = LOW;
+    asf_flag = LOW;
+    asg_flag = LOW;
+    asdp_flag = LOW;
+    break;
 
-case 3:
-  digitalWrite(ASA, HIGH);
-  digitalWrite(ASB, HIGH);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, HIGH);
-  digitalWrite(ASE, LOW);
-  digitalWrite(ASF, LOW);
-  digitalWrite(ASG, HIGH);
-  digitalWrite(ASDP, LOW);
-  break;
+  case 2:
 
-case 4:
-  digitalWrite(ASA, LOW);
-  digitalWrite(ASB, HIGH);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, LOW);
-  digitalWrite(ASE, LOW);
-  digitalWrite(ASF, HIGH);
-  digitalWrite(ASG, HIGH);
-  digitalWrite(ASDP, LOW);
-  break;
+    asa_flag = HIGH;
+    asb_flag = HIGH;
+    asc_flag = LOW;
+    asd_flag = HIGH;
+    ase_flag = HIGH;
+    asf_flag = LOW;
+    asg_flag = HIGH;
+    asdp_flag = LOW;
 
-case 5:
-  digitalWrite(ASA, HIGH);
-  digitalWrite(ASB, LOW);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, HIGH);
-  digitalWrite(ASE, LOW);
-  digitalWrite(ASF, HIGH);
-  digitalWrite(ASG, HIGH);
-  digitalWrite(ASDP, LOW);
-  break;
+    break;
 
-case 6:
-  digitalWrite(ASA, HIGH);
-  digitalWrite(ASB, LOW);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, HIGH);
-  digitalWrite(ASE, HIGH);
-  digitalWrite(ASF, HIGH);
-  digitalWrite(ASG, HIGH);
-  digitalWrite(ASDP, LOW);
-  break;
+  case 3:
+    asa_flag = HIGH;
+    asb_flag = HIGH;
+    asc_flag = HIGH;
+    asd_flag = HIGH;
+    ase_flag = LOW;
+    asf_flag = LOW;
+    asg_flag = HIGH;
+    asdp_flag = LOW;
 
-case 7:
-  digitalWrite(ASA, HIGH);
-  digitalWrite(ASB, HIGH);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, LOW);
-  digitalWrite(ASE, LOW);
-  digitalWrite(ASF, LOW);
-  digitalWrite(ASG, LOW);
-  digitalWrite(ASDP, LOW);
-  break;
+    break;
 
-case 8:
-  digitalWrite(ASA, HIGH);
-  digitalWrite(ASB, HIGH);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, HIGH);
-  digitalWrite(ASE, HIGH);
-  digitalWrite(ASF, HIGH);
-  digitalWrite(ASG, HIGH);
-  digitalWrite(ASDP, LOW);
-  break;
+  case 4:
+    asa_flag = LOW;
+    asb_flag = HIGH;
+    asc_flag = HIGH;
+    asd_flag = LOW;
+    ase_flag = LOW;
+    asf_flag = HIGH;
+    asg_flag = HIGH;
+    asdp_flag = LOW;
 
-case 9:
-  digitalWrite(ASA, HIGH);
-  digitalWrite(ASB, HIGH);
-  digitalWrite(ASC, HIGH);
-  digitalWrite(ASD, LOW);
-  digitalWrite(ASE, LOW);
-  digitalWrite(ASF, HIGH);
-  digitalWrite(ASG, HIGH);
-  digitalWrite(ASDP, LOW);
-  break;
+    break;
 
-default:
-  digitalWrite(ASA, LOW);
-  digitalWrite(ASB, LOW);
-  digitalWrite(ASC, LOW);
-  digitalWrite(ASD, LOW);
-  digitalWrite(ASE, LOW);
-  digitalWrite(ASF, LOW);
-  digitalWrite(ASG, LOW);
-  digitalWrite(ASDP, LOW);
-  break;
-}
+  case 5:
+    asa_flag = HIGH;
+    asb_flag = LOW;
+    asc_flag = HIGH;
+    asd_flag = HIGH;
+    ase_flag = LOW;
+    asf_flag = HIGH;
+    asg_flag = HIGH;
+    asdp_flag = LOW;
 
+    break;
+
+  case 6:
+    asa_flag = HIGH;
+    asb_flag = LOW;
+    asc_flag = HIGH;
+    asd_flag = HIGH;
+    ase_flag = HIGH;
+    asf_flag = HIGH;
+    asg_flag = HIGH;
+    asdp_flag = LOW;
+
+    break;
+
+  case 7:
+    asa_flag = HIGH;
+    asb_flag = HIGH;
+    asc_flag = HIGH;
+    asd_flag = LOW;
+    ase_flag = LOW;
+    asf_flag = LOW;
+    asg_flag = LOW;
+    asdp_flag = LOW;
+
+    break;
+
+  case 8:
+    asa_flag = HIGH;
+    asb_flag = HIGH;
+    asc_flag = HIGH;
+    asd_flag = HIGH;
+    ase_flag = HIGH;
+    asf_flag = HIGH;
+    asg_flag = HIGH;
+    asdp_flag = LOW;
+
+    break;
+
+  case 9:
+    asa_flag = HIGH;
+    asb_flag = HIGH;
+    asc_flag = HIGH;
+    asd_flag = LOW;
+    ase_flag = LOW;
+    asf_flag = HIGH;
+    asg_flag = HIGH;
+    asdp_flag = LOW;
+
+    break;
+
+  default:
+    asa_flag = LOW;
+    asb_flag = LOW;
+    asc_flag = LOW;
+    asd_flag = LOW;
+    ase_flag = LOW;
+    asf_flag = LOW;
+    asg_flag = LOW;
+    asdp_flag = LOW;
+    break;
+  }
 }
 
 /*
