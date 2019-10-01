@@ -1,4 +1,4 @@
-#Requirements
+# Requirements
 
 The purpose of this project is to design and implement an embedded electronic system based stop watch.
 
@@ -15,13 +15,13 @@ The following conditions must be satisfied:
 - Use of external interrupts.
 - Use of MOSFETS to compensate for the microcontrollers' lmited current source and sink capability.
 
-#System Design
+# System Design
 
 
-#Implementation
+# Implementation
 
 
-##Single Digit Display
+## Single Digit Display
 
 |Number          |Active Segments                |
 |----------------|-------------------------------|
@@ -36,13 +36,13 @@ The following conditions must be satisfied:
 |8|afbgecd  |
 |9|afbgc    |
 
-#Integration and Testing
+# Integration and Testing
 
 
-#Deployment of System
+# Deployment of System
 
 
-#Maintenance
+# Maintenance
 
 
 
