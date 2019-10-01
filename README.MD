@@ -1,4 +1,5 @@
 #Requirements
+
 The purpose of this project is to design and implement an embedded electronic system based stop watch.
 
 The following minimum features are required:
@@ -16,9 +17,12 @@ The following conditions must be satisfied:
 
 #System Design
 
+
 #Implementation
 
+
 ##Single Digit Display
+
 |Number          |Active Segments                |
 |----------------|-------------------------------|
 |0|abcdef   |
@@ -34,9 +38,12 @@ The following conditions must be satisfied:
 
 #Integration and Testing
 
+
 #Deployment of System
 
+
 #Maintenance
+
 
 
 
