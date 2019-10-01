@@ -21,6 +21,8 @@
 #define ASDP 16
 
 //Global variable declarations
+uint16_t digit_display_time_delay_us = 250;
+
 //Digit segment display flag declarations
 bool asa_flag = LOW;
 bool asb_flag = LOW;
@@ -32,7 +34,7 @@ bool asg_flag = LOW;
 bool asdp_flag = LOW;
 
 //Function prototypes
-void bubble_print(uint8_t number_to_print);
+void bubble_print(uint16_t number_to_print);
 
 void setup() //Setup of pin modes, serial, and interrupt
 {
@@ -61,24 +63,78 @@ void setup() //Setup of pin modes, serial, and interrupt
 
 void loop() //Main program body
 {
+  //Local variable declarations
+  uint32_t elapsed_time_ms = 0;
 
-  digitalWrite(CC3, HIGH);
+  elapsed_time_ms = millis() / 10; //Save elapsed time (divided by 10 for 10 ms resolution requirement) to elapsed_time_ms
+                                   //Display elapsed time in ms (10 ms resolution for 1/100 s display requirement)
 
-  digitalWrite(ASA, asa_flag);
-  digitalWrite(ASB, asb_flag);
-  digitalWrite(ASC, asc_flag);
-  digitalWrite(ASD, asd_flag);
-  digitalWrite(ASE, ase_flag);
-  digitalWrite(ASF, asf_flag);
-  digitalWrite(ASG, asg_flag);
-  digitalWrite(ASDP, asdp_flag);
+  for (uint8_t i = 4; i >= 1; i--)
+  {
+
+    switch (i)
+    {
+    case 1:
+      digitalWrite(CC1, HIGH);
+      digitalWrite(CC2, LOW);
+      digitalWrite(CC3, LOW);
+      digitalWrite(CC4, LOW);
+      bubble_print(1);
+      break;
+
+    case 2:
+      digitalWrite(CC1, LOW);
+      digitalWrite(CC2, HIGH);
+      digitalWrite(CC3, LOW);
+      digitalWrite(CC4, LOW);
+      bubble_print(2);
+      break;
+
+    case 3:
+      digitalWrite(CC1, LOW);
+      digitalWrite(CC2, LOW);
+      digitalWrite(CC3, HIGH);
+      digitalWrite(CC4, LOW);
+      bubble_print(8);
+      break;
+
+    case 4:
+      digitalWrite(CC1, LOW);
+      digitalWrite(CC2, LOW);
+      digitalWrite(CC3, LOW);
+      digitalWrite(CC4, HIGH);
+      bubble_print(4);
+      break;
+    }
+
+    while (micros() % digit_display_time_delay_us > 0) //Delay prior to displaying the next digit
+    {
+    }
+  }
 }
 
-void bubble_print(uint8_t number_to_print)
+void bubble_print(uint16_t number_to_print) //Print a 4 digit number to the bubble display, minimum 16 bit to reach at least 9999 max display number
 {
+  //Decompose 4 digit number into 4 individual digits
+  uint8_t number_to_print_4th_digit = (number_to_print / 1) % 10;    //4th or least significant digit
+  uint8_t number_to_print_3rd_digit = (number_to_print / 10) % 10;   //3rd digit
+  uint8_t number_to_print_2nd_digit = (number_to_print / 100) % 10;  //2nd digit
+  uint8_t number_to_print_1st_digit = (number_to_print / 1000) % 10; //1st or most significant digit
 
+  //Print a single digit
   switch (number_to_print)
   {
+  case 0:
+    asa_flag = HIGH;
+    asb_flag = HIGH;
+    asc_flag = HIGH;
+    asd_flag = HIGH;
+    ase_flag = HIGH;
+    asf_flag = HIGH;
+    asg_flag = LOW;
+    asdp_flag = LOW;
+    break;
+
   case 1:
     asa_flag = LOW;
     asb_flag = HIGH;
@@ -198,6 +254,15 @@ void bubble_print(uint8_t number_to_print)
     asdp_flag = LOW;
     break;
   }
+
+  digitalWrite(ASA, asa_flag);
+  digitalWrite(ASB, asb_flag);
+  digitalWrite(ASC, asc_flag);
+  digitalWrite(ASD, asd_flag);
+  digitalWrite(ASE, ase_flag);
+  digitalWrite(ASF, asf_flag);
+  digitalWrite(ASG, asg_flag);
+  digitalWrite(ASDP, asdp_flag);
 }
 
 /*
