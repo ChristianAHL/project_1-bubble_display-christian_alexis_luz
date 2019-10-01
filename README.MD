@@ -44,6 +44,9 @@ The following conditions must be satisfied:
 
 # Maintenance
 
+# References
+
+https://arduino.stackexchange.com/questions/28092/how-do-i-split-a-number-into-individual-digits
 
 
 

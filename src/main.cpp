@@ -1,16 +1,16 @@
 #include <Arduino.h> //Include the standard Arduino framwork library
 
-//General Pin Assignments
+//General pin assignments
 #define LED_PIN 11
-#define BUTTON_PIN 6
+#define START_STOP_BUTTON_PIN 10
 
-//Bubble Display Common Cathode Pin Assignments
+//Bubble display common cathode pin assignments
 #define CC1 15
 #define CC2 13
 #define CC3 14
 #define CC4 12
 
-//Bubble Display Anode Segment Pin Assignments
+//Bubble display anode segment pin assignments
 #define ASA 23
 #define ASB 22
 #define ASC 21
@@ -21,7 +21,8 @@
 #define ASDP 16
 
 //Global variable declarations
-uint16_t digit_display_time_delay_us = 250;
+
+volatile bool stopped_state_flag = false; //Volatile prevents optimization by the compiler, flag for button press event
 
 //Digit segment display flag declarations
 bool asa_flag = LOW;
@@ -35,14 +36,21 @@ bool asdp_flag = LOW;
 
 //Function prototypes
 void bubble_print(uint16_t number_to_print);
+void ISR_start_stop_press();
+
+//Configuration constants
+uint16_t DEBOUNCE_DELAY_MS = 200;
+uint16_t DIGIT_DISPLAY_DELAY_US = 250;
 
 void setup() //Setup of pin modes, serial, and interrupt
 {
-  Serial.begin(9600); //Set baud rate
-
+  
   //General Pin Setup
   pinMode(LED_PIN, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(START_STOP_BUTTON_PIN, INPUT_PULLUP);
+
+  Serial.begin(9600); //Set baud rate
+  attachInterrupt(START_STOP_BUTTON_PIN, ISR_start_stop_press, RISING);
 
   //Anode Segment Pin Setup
   pinMode(ASA, OUTPUT);
@@ -64,11 +72,27 @@ void setup() //Setup of pin modes, serial, and interrupt
 void loop() //Main program body
 {
   //Local variable declarations
-  uint32_t elapsed_time_ms = 0;
+  static uint32_t elapsed_time_ms = 0;
+  static uint32_t time_at_stop_ms = 0;
 
-  elapsed_time_ms = millis() / 10; //Save elapsed time (divided by 10 for 10 ms resolution requirement) to elapsed_time_ms
+  if (stopped_state_flag == true) {
+    
+    time_at_stop_ms = elapsed_time_ms;
+    Serial.println(time_at_stop_ms);
+    bubble_print(time_at_stop_ms);
 
-  bubble_print(elapsed_time_ms);
+    
+  }
+  else {
+    elapsed_time_ms = (millis() / 10) - time_at_stop_ms; //Save elapsed time (divided by 10 for 10 ms resolution requirement) to elapsed_time_ms
+    bubble_print(elapsed_time_ms);
+  }
+
+    
+  
+  
+  
+  
 }
 
 void bubble_print(uint16_t number_to_print) //Print a 4 digit number to the bubble display, minimum 16 bits to reach at least 9999 max display number
@@ -262,14 +286,13 @@ void bubble_print(uint16_t number_to_print) //Print a 4 digit number to the bubb
     digitalWrite(ASG, asg_flag);
     digitalWrite(ASDP, asdp_flag);
 
-    while (micros() % digit_display_time_delay_us > 0) //Delay prior to displaying the next digit
+    while (micros() % DIGIT_DISPLAY_DELAY_US > 0) //Delay prior to displaying the next digit
     {
     }
   }
 }
 
-/*
-void ISR_button_press() //Interrupt service routine that handles print frequency request one the push button is pressed
+void ISR_start_stop_press() //Interrupt service routine that handles stopping or starting of stop watch
 {
 
   noInterrupts(); //Prevent other interrupts
@@ -280,9 +303,13 @@ void ISR_button_press() //Interrupt service routine that handles print frequency
 
   if ((current_press_time_ms - previous_press_time_ms) > DEBOUNCE_DELAY_MS) //Code segment that handles noting of frequency print request, with button debounce
   {
-    frequency_requested_flag = true;                //Set flag to true to indicate a frequency print request at the main loop
+    if (stopped_state_flag == false){
+      stopped_state_flag = true;                //Set flag to true to indicate a stop stop watch request
+    }
+    else if (stopped_state_flag == true){
+      stopped_state_flag = false;              //Set flag to false to indicate a start stop watch request
+    }
     previous_press_time_ms = current_press_time_ms; //Updates previous time to facilitate correct debounce timing
   }
   interrupts(); //Re-enable other interrupts
 }
-*/
