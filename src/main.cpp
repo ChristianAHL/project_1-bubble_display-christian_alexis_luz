@@ -1,7 +1,7 @@
 #include <Arduino.h> //Include the standard Arduino framwork library
 
 //General pin assignments
-#define LED_PIN 11
+#define RESET_BUTTON_PIN 11
 #define START_STOP_BUTTON_PIN 10
 
 //Bubble display common cathode pin assignments
@@ -22,7 +22,8 @@
 
 //Global variable declarations
 
-volatile bool stopped_state_flag = false; //Volatile prevents optimization by the compiler, flag for button press event
+volatile bool stopped_state_flag = false; //Volatile prevents optimization by the compiler, flag for start/stop button press event
+volatile bool reset_requested_flag = false; //Volatile prevents optimization by the compiler, flag for reset button press event
 
 //Digit segment display flag declarations
 bool asa_flag = LOW;
@@ -37,6 +38,7 @@ bool asdp_flag = LOW;
 //Function prototypes
 void bubble_print(uint16_t number_to_print);
 void ISR_start_stop_press();
+void ISR_reset_press();
 
 //Configuration constants
 uint16_t DEBOUNCE_DELAY_MS = 200;
@@ -46,11 +48,12 @@ void setup() //Setup of pin modes, serial, and interrupt
 {
   
   //General Pin Setup
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(RESET_BUTTON_PIN, INPUT_PULLUP);
   pinMode(START_STOP_BUTTON_PIN, INPUT_PULLUP);
 
   Serial.begin(9600); //Set baud rate
   attachInterrupt(START_STOP_BUTTON_PIN, ISR_start_stop_press, RISING);
+  attachInterrupt(RESET_BUTTON_PIN, ISR_reset_press, FALLING);
 
   //Anode Segment Pin Setup
   pinMode(ASA, OUTPUT);
@@ -74,9 +77,24 @@ void loop() //Main program body
   //Local variable declarations
   static uint32_t elapsed_time_ms = 0;
   static uint32_t time_restart_compensation_ms  = 0;
+  static uint32_t time_reset_compensation_ms = 0;
   static uint32_t elapsed_time_at_stop_ms  = 0;
 
-  elapsed_time_ms = (millis() / 10) - time_restart_compensation_ms;
+  if (reset_requested_flag == false){
+  
+   elapsed_time_ms = (millis() / 10) - time_restart_compensation_ms - time_reset_compensation_ms;
+
+  }
+
+  else if (reset_requested_flag == true){
+
+     
+    time_reset_compensation_ms = millis() / 10;
+    time_restart_compensation_ms = 0;
+    elapsed_time_at_stop_ms = 0;
+    reset_requested_flag = false;
+
+  }
 
   if (stopped_state_flag == false) {
     
@@ -87,13 +105,9 @@ void loop() //Main program body
 
   else if (stopped_state_flag == true) {
 
+    time_restart_compensation_ms = (millis() / 10) - elapsed_time_at_stop_ms - time_reset_compensation_ms;
     bubble_print(elapsed_time_at_stop_ms);
-    time_restart_compensation_ms = (millis() / 10) - elapsed_time_at_stop_ms;
   }
-
-
-  
-  
 
 }
 
@@ -311,6 +325,24 @@ void ISR_start_stop_press() //Interrupt service routine that handles stopping or
     else if (stopped_state_flag == true){
       stopped_state_flag = false;              //Set flag to false to indicate a start stop watch request
     }
+    previous_press_time_ms = current_press_time_ms; //Updates previous time to facilitate correct debounce timing
+  }
+  interrupts(); //Re-enable other interrupts
+}
+
+void ISR_reset_press() //Interrupt service routine that handles resetting of stop watch
+{
+
+   noInterrupts(); //Prevent other interrupts
+
+  //Local variable declarations
+  static uint32_t previous_press_time_ms = 0; //Previous time noted for debouncing
+  uint32_t current_press_time_ms = millis();  //Current time noted for debouncing
+
+  if ((current_press_time_ms - previous_press_time_ms) > DEBOUNCE_DELAY_MS) //Code segment that handles noting of frequency print request, with button debounce
+  {
+   
+    reset_requested_flag = true;
     previous_press_time_ms = current_press_time_ms; //Updates previous time to facilitate correct debounce timing
   }
   interrupts(); //Re-enable other interrupts
