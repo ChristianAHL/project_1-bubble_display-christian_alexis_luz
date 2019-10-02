@@ -41,7 +41,6 @@ void ISR_start_stop_press();
 //Configuration constants
 uint16_t DEBOUNCE_DELAY_MS = 200;
 uint16_t DIGIT_DISPLAY_DELAY_US = 250;
-uint16_t TIME_STEP_INCREMENT_MS = 10;
 
 void setup() //Setup of pin modes, serial, and interrupt
 {
@@ -74,23 +73,27 @@ void loop() //Main program body
 {
   //Local variable declarations
   static uint32_t elapsed_time_ms = 0;
-  static uint32_t time_at_stop_ms = 0;
-  static uint32_t previous_elapsed_time_ms  = 0;
-  static uint32_t current_elapsed_time_ms  = 0;
+  static uint32_t time_restart_compensation_ms  = 0;
+  static uint32_t elapsed_time_at_stop_ms  = 0;
+
+  elapsed_time_ms = (millis() / 10) - time_restart_compensation_ms;
+
+  if (stopped_state_flag == false) {
+    
+    bubble_print(elapsed_time_ms);
+    elapsed_time_at_stop_ms = elapsed_time_ms;
+
+  }
+
+  else if (stopped_state_flag == true) {
+
+    bubble_print(elapsed_time_at_stop_ms);
+    time_restart_compensation_ms = (millis() / 10) - elapsed_time_at_stop_ms;
+  }
+
 
   
-
-  if (stopped_state_flag == true) {
-    
-  }
-  else if (stopped_state_flag == false && (millis() % 10) == 0) {
-    
-    elapsed_time_ms++;
-    
-  }
-
-  bubble_print(elapsed_time_ms);
-  Serial.println(millis());
+  
 
 }
 
