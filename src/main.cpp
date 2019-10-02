@@ -41,6 +41,7 @@ void ISR_start_stop_press();
 //Configuration constants
 uint16_t DEBOUNCE_DELAY_MS = 200;
 uint16_t DIGIT_DISPLAY_DELAY_US = 250;
+uint16_t TIME_STEP_INCREMENT_MS = 10;
 
 void setup() //Setup of pin modes, serial, and interrupt
 {
@@ -74,25 +75,23 @@ void loop() //Main program body
   //Local variable declarations
   static uint32_t elapsed_time_ms = 0;
   static uint32_t time_at_stop_ms = 0;
+  static uint32_t previous_elapsed_time_ms  = 0;
+  static uint32_t current_elapsed_time_ms  = 0;
+
+  
 
   if (stopped_state_flag == true) {
     
-    time_at_stop_ms = elapsed_time_ms;
-    Serial.println(time_at_stop_ms);
-    bubble_print(time_at_stop_ms);
-
+  }
+  else if (stopped_state_flag == false && (millis() % 10) == 0) {
+    
+    elapsed_time_ms++;
     
   }
-  else {
-    elapsed_time_ms = (millis() / 10) - time_at_stop_ms; //Save elapsed time (divided by 10 for 10 ms resolution requirement) to elapsed_time_ms
-    bubble_print(elapsed_time_ms);
-  }
 
-    
-  
-  
-  
-  
+  bubble_print(elapsed_time_ms);
+  Serial.println(millis());
+
 }
 
 void bubble_print(uint16_t number_to_print) //Print a 4 digit number to the bubble display, minimum 16 bits to reach at least 9999 max display number
