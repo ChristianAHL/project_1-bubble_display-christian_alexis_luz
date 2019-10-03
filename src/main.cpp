@@ -73,18 +73,11 @@ void setup() //Setup of pin modes and interrupts.
 void loop() //Main program body.
 {
   //Local variable declarations.
-<<<<<<< HEAD
   static unsigned long elapsed_time_ms = 0;              //Time elapsed in milliseconds.
   static unsigned long time_restart_compensation_ms = 0; //Time subtracted from millis() to ensure time is restarted at the correct time upon restarting from a stop state.
   static unsigned long time_reset_compensation_ms = 0;   //Time subtracted from millis() to ensure time starts at 0 seconds upon stop watch reset.
   static unsigned long elapsed_time_at_stop_ms = 0;      //Saves the current time when stop watch is stopped.
-=======
-  static uint32_t elapsed_time_ms = 0;                       //Time elapsed in milliseconds.
-  static uint32_t time_restart_compensation_ms = 0;          //Time subtracted from millis() to ensure time is restarted at the correct time upon restarting from a stop state.
-  static uint32_t time_reset_compensation_ms = 0;            //Time subtracted from millis() to ensure time starts at 0 seconds upon stop watch reset.
-  static uint32_t elapsed_time_at_stop_ms = 0;               //Saves the current time when stop watch is stopped.
-  static bool millis_value_at_stop_serially_printed = false; //Flag that indicates whether or not current millis() value at stop has been printed, for precision testing purposes.
->>>>>>> 72831bfac4258fc8da6f9741851508bbfdb2e1a2
+
 
   //If-Then block handling time reset functionality.
   if (reset_requested_flag == false)
@@ -105,7 +98,7 @@ void loop() //Main program body.
   //If-Then block handling start/stop functionality.
   if (stopped_state_flag == false)
   {
-    millis_value_at_stop_serially_printed = false;
+    
     bubble_print(elapsed_time_ms);
     elapsed_time_at_stop_ms = elapsed_time_ms;
   }
@@ -116,15 +109,6 @@ void loop() //Main program body.
     time_restart_compensation_ms = (millis() / 10) - elapsed_time_at_stop_ms - time_reset_compensation_ms;
     bubble_print(elapsed_time_at_stop_ms);
     
-    //Serially print millis() function value if it hasn't been already for comparison with displayed time on bubble display.
-    if (millis_value_at_stop_serially_printed == false){
-      
-      Serial.println(millis());
-      millis_value_at_stop_serially_printed = true;
-
-    }
-
-    else {}
     
   }
 }
