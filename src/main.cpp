@@ -96,18 +96,16 @@ void loop() //Main program body.
   }
 
   //If-Then block handling start/stop functionality.
-  if (stopped_state_flag == false)
+  if (stopped_state_flag == false && millis() < 10000)
   {
     millis_value_at_stop_serially_printed = false;
     bubble_print(elapsed_time_ms);
     elapsed_time_at_stop_ms = elapsed_time_ms;
   }
 
-  else if (stopped_state_flag == true)
+  else if (stopped_state_flag == true || millis() >= 10000) // Force stop watch to stop when millis reaches 10000 ms.
   {
-
-    time_restart_compensation_ms = (millis() / 10) - elapsed_time_at_stop_ms - time_reset_compensation_ms;
-    bubble_print(elapsed_time_at_stop_ms);
+    
     
     //Serially print millis() function value if it hasn't been already for comparison with displayed time on bubble display.
     if (millis_value_at_stop_serially_printed == false){
@@ -118,6 +116,10 @@ void loop() //Main program body.
     }
 
     else {}
+
+    stopped_state_flag = true;
+    time_restart_compensation_ms = (millis() / 10) - elapsed_time_at_stop_ms - time_reset_compensation_ms;
+    bubble_print(elapsed_time_at_stop_ms);
     
   }
 }
