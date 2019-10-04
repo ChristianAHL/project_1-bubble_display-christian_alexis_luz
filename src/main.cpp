@@ -40,7 +40,7 @@ void ISR_start_stop_press();                 //Starts or stops the stop watch.
 void ISR_reset_press();                      //Resets the stop watch to 0 seconds.
 
 //Configuration constants.
-unsigned long DEBOUNCE_DELAY_MS = 200;      //Time window in milliseconds where button inputs are not entertained, for debounce purposes.
+unsigned long DEBOUNCE_DELAY_MS = 1;      //Time window in milliseconds where button inputs are not entertained, for debounce purposes.
 unsigned long DIGIT_DISPLAY_DELAY_US = 250; //Time allocated in microseconds for each single digit to be displayed on bubble display in turn. Should be a value that reduces apparent flicker.
 
 void setup() //Setup of pin modes and interrupts.
