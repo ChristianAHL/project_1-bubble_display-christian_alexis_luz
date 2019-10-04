@@ -23,7 +23,7 @@ The following conditions must be satisfied:
 
 The bubble display stop watch circuit schematic is shown below:
 
-![Bubble display stop watch circuit schematic.](media/circuit_schematic.jpg)
+![Bubble display stop watch circuit schematic.](media\circuit_schematic.jpg)
 
 A brief explanation of the circuit design follows:
 - The momentary push buttons (Start/Stop and Reset) activate softare interrupts by pulling microcontroller pins 10 and 11 to ground. These pins are internally pulled up to prevent them from floating.
@@ -98,13 +98,14 @@ The code was altered to force the stop watch to stop when the millis() function 
 The millis() function value was printed serially in milliseconds:
 
 
-![Serially printed millis() function value.](media/serially_printed_millis_value.JPG)
+![Serially printed millis() function value.](media\serially_printed_millis_value.JPG)
 
 
 Comparing this to the time in seconds displayed on the bubble display:
 
 
-![Bubble display time.](media/bubble_display_time.JPG)
+![Bubble display time.](media\bubble_display_time.JPG)
+
 
 
 # DISCUSSION AND CONCLUSION
