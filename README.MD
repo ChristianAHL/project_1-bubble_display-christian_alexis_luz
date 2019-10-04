@@ -33,6 +33,8 @@ A brief explanation of the circuit design follows:
 - N-FETS are utilized to protect excessive current sinking on the microcontroller, which can be the case when all anode segments are high (such as for the number '8.'). Each anode segment draws about 5 mA - having all 8 activated will require a current of 40 mA to be sunk which cannot be accomodated by the microcontroller.
 - Resistors R9 to R12 lmit the current drawn from microcontroller pins 12 to 15 as voltage builds up on the N-FET gate.
 - Resistors R13 to R16 ensures that the N-FET stops conducting to ground as soon as its corresponding microcontroller gate pin goes low. The resistor provides a path through which the voltage built up on the gate can be dissipated, shutting off the N-FET. A relatively high resistor value is needed to divert current from the microcontroller pin away from ground and towards the gate when a pin goes high.
+-
+
 
 
 ## Program Design
