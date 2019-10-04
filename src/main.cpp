@@ -88,7 +88,7 @@ void loop() //Main program body.
 
   else if (reset_requested_flag == true)
   {
-
+    Serial.println("Timer reset.");
     time_reset_compensation_ms = millis() / 10;
     time_restart_compensation_ms = 0;
     elapsed_time_at_stop_ms = 0;
@@ -339,6 +339,7 @@ void ISR_reset_press() //Interrupt service routine that handles resetting of sto
 {
 
   noInterrupts(); //Prevent other interrupts.
+  Serial.println("Reset request received.");
 
   //Local variable declarations.
   static uint32_t previous_press_time_ms = 0; //Previous time noted for debouncing.
