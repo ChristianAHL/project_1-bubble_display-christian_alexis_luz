@@ -23,7 +23,8 @@ The following conditions must be satisfied:
 
 The bubble display stop watch circuit schematic is shown below:
 
-![Bubble display stop watch circuit schematic.](media\circuit_schematic.jpg)
+![Bubble display stop watch circuit schematic.](media/circuit_schematic.jpg)
+
 
 A brief explanation of the circuit design follows:
 - The momentary push buttons (Start/Stop and Reset) activate softare interrupts by pulling microcontroller pins 10 and 11 to ground. These pins are internally pulled up to prevent them from floating.
