@@ -98,13 +98,14 @@ The code was altered to force the stop watch to stop when the millis() function 
 The millis() function value was printed serially in milliseconds:
 
 
-![Serially printed millis() function value.](media/serially_printed_millis_value.JPG)
+![Serially printed millis() function value.](media/serially_printed_millis_value.jpg)
 
 
 Comparing this to the time in seconds displayed on the bubble display:
 
 
-![Bubble display time.](media/bubble_display_time.JPG)
+![Bubble display time.](media/bubble_display_time.jpg)
+
 
 
 # DISCUSSION AND CONCLUSION
