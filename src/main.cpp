@@ -40,8 +40,8 @@ void ISR_start_stop_press();                 //Starts or stops the stop watch.
 void ISR_reset_press();                      //Resets the stop watch to 0 seconds.
 
 //Configuration constants.
-uint16_t DEBOUNCE_DELAY_MS = 200;      //Time window in milliseconds where button inputs are not entertained, for debounce purposes.
-uint16_t DIGIT_DISPLAY_DELAY_US = 250; //Time allocated in microseconds for each single digit to be displayed on bubble display in turn. Should be a value that reduces apparent flicker.
+unsigned long DEBOUNCE_DELAY_MS = 200;      //Time window in milliseconds where button inputs are not entertained, for debounce purposes.
+unsigned long DIGIT_DISPLAY_DELAY_US = 250; //Time allocated in microseconds for each single digit to be displayed on bubble display in turn. Should be a value that reduces apparent flicker.
 
 void setup() //Setup of pin modes and interrupts.
 {
@@ -73,10 +73,10 @@ void setup() //Setup of pin modes and interrupts.
 void loop() //Main program body.
 {
   //Local variable declarations.
-  static uint32_t elapsed_time_ms = 0;                       //Time elapsed in milliseconds.
-  static uint32_t time_restart_compensation_ms = 0;          //Time subtracted from millis() to ensure time is restarted at the correct time upon restarting from a stop state.
-  static uint32_t time_reset_compensation_ms = 0;            //Time subtracted from millis() to ensure time starts at 0 seconds upon stop watch reset.
-  static uint32_t elapsed_time_at_stop_ms = 0;               //Saves the current time when stop watch is stopped.
+  static unsigned long elapsed_time_ms = 0;              //Time elapsed in milliseconds.
+  static unsigned long time_restart_compensation_ms = 0; //Time subtracted from millis() to ensure time is restarted at the correct time upon restarting from a stop state.
+  static unsigned long time_reset_compensation_ms = 0;   //Time subtracted from millis() to ensure time starts at 0 seconds upon stop watch reset.
+  static unsigned long elapsed_time_at_stop_ms = 0;      //Saves the current time when stop watch is stopped.
   static bool millis_value_at_stop_serially_printed = false; //Flag that indicates whether or not current millis() value at stop has been printed, for precision testing purposes.
 
   //If-Then block handling time reset functionality.
