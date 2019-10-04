@@ -338,8 +338,8 @@ void ISR_start_stop_press() //Interrupt service routine that handles stopping or
 void ISR_reset_press() //Interrupt service routine that handles resetting of stop watch to 0 seconds.
 {
 
-  noInterrupts(); //Prevent other interrupts.
   Serial.println("Reset request received.");
+  noInterrupts(); //Prevent other interrupts.
 
   //Local variable declarations.
   static uint32_t previous_press_time_ms = 0; //Previous time noted for debouncing.
