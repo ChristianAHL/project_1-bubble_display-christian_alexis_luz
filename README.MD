@@ -47,7 +47,7 @@ A brief explanation of the circuit design follows:
 >(3.3 V- 1.6 V) / 390 ohms = 4.36 mA, satisfying the Teensy's 10 mA and bubble display's 5 mA current limit.
 - Microntroller pins 16 to 23 drive which anode segment lights up on the QDSP-6064 bubble display (A to DP). These pins determine what number is displayed. A bubble display pinout guide is illustrated below (Malinowo, 2015):
 
-![Bubble display pinout.](media/bubble_display_pinout.jpg)
+![Bubble display pinout.](media/bubble_displayPinout.jpg)
 
 - Microcontroller pins 12 to 15 drive enhancement LU8743 N-FETs Q1 to Q4 to activate the 4 bubble digit display slots sequentially. This is achieved by sending a voltage to the gate of the N-FET, causing the the N-FET to conduct current from the corresponding digit slot's common cathode. This completes the circuit with the anode segments by sinking the current to ground, displaying a number at a particular digit slot.
 >The N-FET gates' voltages are determined by the voltage divider network formed by the 660 ohm (R9 to R12) and 10k ohm (R13 to R16) resistors. The N-FET has a forward diode voltage drop of 1 V and typical gate threshold voltage of 1.9 V (International Rectifier, n.d.). The gate voltage is determined to be:
@@ -58,7 +58,7 @@ A brief explanation of the circuit design follows:
 
 Pictured below is the actual circuit implemented on a breadboard:
 
-![Bubble display overview.](media/bubble_display_overview.jpg)
+![Bubble display overview.](media/bubble_displayOverview.jpg)
 
 1. Teensy 3.2 microcontroller development board, connected to laptop via USB
 2. Resistor bank
